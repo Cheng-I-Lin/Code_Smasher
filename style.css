@@ -1,0 +1,125 @@
+#intro{
+    position: absolute;
+    left: 0vw;
+    bottom: 0vh;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    overflow: hidden;
+    color: white;
+    text-align: center;
+    transition: all 1s;
+}
+.shape{
+    position: absolute;
+    width: 10vw;
+    height: 10vw;
+    opacity: 0;
+    transition: all 2s;
+}
+.shape:hover{
+    background-color: rgba(255, 166, 0, 0.25);
+    border: orange 4px solid;
+}
+#circle{
+    left: 15vw;
+    top: 17.5vh;
+}
+#triangle{
+    left: 15vw;
+    top: 57.5vh;
+}
+#square{
+    left: 75vw;
+    top: 17.5vh;
+}
+#plus{
+    left: 75vw;
+    top: 57.5vh;
+}
+#instructions{
+    transition: all 2s;
+    opacity: 0;
+}
+#start{
+    transition: all 2s;
+    opacity: 0;
+}
+#chooseTitle{
+    transition: all 2s;
+    opacity: 0;
+}
+#title{
+    position: absolute;
+    top: -100vh;
+    transition: all 2s;
+}
+.introButton{
+    width: 10vw;
+    height: 10vh;
+    background-color: rgb(255, 212, 147);
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    border: orange 4px solid;
+}
+#instructionPage{
+    position: absolute;
+    left: 0vw;
+    bottom: 0vh;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    color: white;
+    text-align: center;
+    font-size: 1.25em;
+    transition: all 1s;
+}
+#instructText{
+    position: absolute;
+    left: 5vw;
+    top: 11.5vh;
+    width: 90vw;
+    height: 70vh;
+    overflow-y: scroll;
+    text-align: left;
+    border: orange 4px solid;
+}
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0,0);
+}
+::-webkit-scrollbar-thumb {
+    background: #555;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: white;
+}
+::-webkit-scrollbar-corner{
+    display: none;
+}
+#background{
+    position: absolute;
+    left: 0vw;
+    top: 0vh;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    color: white;
+    text-align: center;
+    font-size: 1.25em;
+    transition: all 1s;
+}
+#gameCanvas{
+    position: absolute;
+}
+#grid{
+    position: absolute;
+    left: 0vw;
+    top: 12.5vh;
+    width: 100vw;
+    height: 70vh;
+}

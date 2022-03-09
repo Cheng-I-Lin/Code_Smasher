@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Code Smasher</title>
+        <link rel="stylesheet" href="style.css"/>
+        <link rel="icon" type="image/png" href="icon.png"/>
+    </head>
+    <body>
+        <div id="background">
+            <h1 id="gameName"></h1>
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <button class="introButton" onclick="back();"><strong>BACK</strong></button>
+            <button class="introButton" id="pauseButton" onclick="pauseGame();"><strong>PAUSE</strong></button>
+            <button class="introButton" id="pauseButton" onclick="restartGame();"><strong>RESTART</strong></button>
+        </div>
+        <div id="grid"></div>
+        <canvas id="gameCanvas"></canvas>
+        <div id="instructionPage">
+            <h1>Instructions</h1>
+            <div id="instructText">
+                <strong>General Instructions:</strong><br>
+                There is a total of 5 different games modes you can choose, each with a different way to play. To start, click
+                on the shapes corresponding to the titles of the game. To play the game, use the keyboard controls on your computer 
+                and the mouse and follow the corresponding instructions for each game mode. By clicking the "BACK" button on the 
+                screen, the game will end and the screen will be transitioned back the title/introduction screen.
+                <br><br>
+                <strong>Protect the Bubble:</strong><br>
+
+                <br><br>
+                <strong>Square Up:</strong><br>
+                Square Up is a two player game where each player would use either the arrow keys or the W, A, S, and D keys to control
+                the movements of a square. Each player can move the square left to right and can also make it jump. Moreover, by pressing
+                either the S key or the down arrow key, the square will shrink, becoming a smaller square with a faster movement speed.
+                The objective of this game is to try to jump on top of the other player's square, and the first to do so wins
+                <br><br>
+                <strong>Trinity:</strong><br>
+
+                <br><br>
+                <strong>Addition Equation:</strong><br>
+                
+                <br><br>
+                <strong>Code Smasher:</strong><br>
+
+            </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <button class="introButton" onclick="back();"><strong>BACK</strong></button>
+        </div>
+        <!--Make hammer fly in for intro page, maybe don't need start, just start with click-->
+        <div id="intro">
+            <img id="title" src="titleCard.png" onclick="gameMode(this.id);">
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <h1 id="chooseTitle">Select a Game Mode</h1>
+            <img class="shape" id="square" src="square.png" onclick="gameMode(this.id);">
+            <img class="shape" id="triangle" src="triangle.png" onclick="gameMode(this.id);">
+            <img class="shape" id="circle" src="circle.png" onclick="gameMode(this.id);">
+            <img class="shape" id="plus" src="plus.png" onclick="gameMode(this.id);">
+            <!--Redirects to the home page website-->
+            <button class="introButton" id="start" onclick="location.href='https://cheng-i-lin.github.io'"><strong>MAIN WEBSITE</strong></button>
+            <button class="introButton" id="instructions" onclick="instruct();"><strong>INSTRUCTIONS</strong></button>
+        </div>
+        <h1 id="hi" style="color: aliceblue; position: absolute;"></h1>
+        <script src="game.js"></script>
+    </body>
+</html>
