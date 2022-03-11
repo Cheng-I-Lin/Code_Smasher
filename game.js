@@ -22,6 +22,8 @@ var trinityArr=[];
 var trialArr=[];
 var addEquation=false;
 var codeSmasher=false;
+//Negative one so at first one plus point
+var points=-1;
 //The two squares
 var player1={
     x:0,
@@ -34,6 +36,16 @@ var player2={
     y:0,
     ySpeed:0,
     size:150
+}
+var obstacle={
+    y:0,
+    size:80
+}
+obstacle.y=-obstacle.size;
+var safeSpot={
+    x:Math.random()*(grid.offsetWidth-300),
+    y:0,
+    size:300
 }
 var controls1={
     up:false,
@@ -116,8 +128,32 @@ function drawGame(){
         ds.fillRect(player2.x,player2.y,player2.size,player2.size);
     }
     if(bubble){
+        /*ds.fillStyle="transparent";
+        ds.fillRect(0,obstacle.y,window.innerWidth,obstacle.size);*/
+        ds.strokeStyle="orange";
+        ds.beginPath();
+        ds.moveTo(2,obstacle.y+2);
+        ds.lineTo(window.innerWidth-2,obstacle.y+2);
+        ds.lineTo(window.innerWidth-2,obstacle.y+obstacle.size-2);
+        ds.lineTo(2,obstacle.y+obstacle.size-2);
+        ds.closePath();
+        ds.lineWidth=4;
+        ds.stroke();
+        ds.beginPath();
+        ds.moveTo(safeSpot.x-2,safeSpot.y);
+        ds.lineTo(safeSpot.x-2,safeSpot.y+obstacle.size);
+        ds.closePath();
+        ds.stroke();
+        ds.beginPath();
+        ds.moveTo(safeSpot.x+safeSpot.size+2,safeSpot.y);
+        ds.lineTo(safeSpot.x+safeSpot.size+2,safeSpot.y+obstacle.size);
+        ds.closePath();
+        ds.stroke();
+        ds.fillStyle="black";
+        ds.fillRect(safeSpot.x,safeSpot.y,safeSpot.size,obstacle.size);
         ds.fillStyle="white";
-
+        ds.arc(player1.x,player1.y-grid.offsetTop,25,0,2*Math.PI);
+        ds.fill();
     }
     if(trinity){
         ds.fillStyle="white";
@@ -254,7 +290,46 @@ document.addEventListener("keyup",function(key){
             break;
     }
 });
+var mouseX=0;
+var mouseY=0;
+document.addEventListener("mousemove",function(mouse){
+    mouseX=mouse.x;
+    mouseY=mouse.y;
+});
+const numBox=document.getElementsByClassName("box");
+const number=document.getElementsByClassName("num");
+var boxID=0;
+function selectBox(id){
+    //document.getElementById("hi").innerHTML=id.substring(id.length-1);
+    for(let i=0;i<numBox.length;i++){
+        if(i==parseInt(id.substring(id.length-1))-1){
+            numBox[i].style.backgroundColor="rgba(255, 255, 255, 0.5)";
+        } else{
+            numBox[i].style.backgroundColor="transparent";
+        }
+    }
+    boxID=parseInt(id.substring(id.length-1))-1;
+}
 function game(){
+    let score=document.getElementById("score");
+    if(bubble){
+        score.style.display="block";
+        score.innerHTML="Score: "+points;
+        player1.x=mouseX;
+        player1.y=mouseY;
+        obstacle.y+=2;
+        safeSpot.y=obstacle.y;
+        //Collision dectection
+        if(true){
+
+        }
+        if(obstacle.y>=grid.offsetHeight){
+            obstacle.y=0-obstacle.size;
+            safeSpot.x=Math.random()*(grid.offsetWidth-safeSpot.size);
+        }
+    } else{
+        score.style.display="none";
+    }
     if(squareUp){
         //Gravity pull
         player1.ySpeed+=0.85;
@@ -316,6 +391,21 @@ function game(){
             player2.y=grid.offsetHeight-player2.size;
         }    
     }
+    if(trinity){
+
+    }
+    if(addEquation){
+        for(let i=0;i<numBox.length;i++){
+            numBox[i].style.display="block";
+        }
+    } else{
+        for(let i=0;i<numBox.length;i++){
+            numBox[i].style.display="none";
+        }
+    }
+    if(codeSmasher){
+        //Hammer falls
+    }
 }
 function instruct(){
     document.getElementById("intro").style.bottom="100vh";
@@ -327,11 +417,17 @@ function back(){
     player1.y=0;
     player2.x=window.innerWidth-player2.size;
     player2.y=0;
+    points=-1;
+    obstacle.y=-obstacle.size;
+    safeSpot.x=Math.random()*(grid.offsetWidth-safeSpot.size);
     squareUp=false;
     bubble=false;
     trinity=false;
     addEquation=false;
     codeSmasher=false;
+    //Unpause game so that canvas can change
+    pause=false;
+    document.getElementById("pauseButton").style.backgroundColor="rgb(255, 212, 147)";
 }
 function pauseGame(){
     let pauseButton=document.getElementById("pauseButton");
@@ -346,6 +442,11 @@ function pauseGame(){
 function restartGame(){
 
 }
+setInterval(function(){
+    if(bubble&&!pause){
+        points++;
+    }
+},1000);
 setInterval(function(){
     if(!pause){
         drawGame();
@@ -363,4 +464,5 @@ Try using other languages as well, like c++, python, unity
 Notable game ideas: Three dots form in line, player move all dots to move
 
 Consider only use one dash in square up, need to think what migh happen when two dash and collide
+can see if want to use p,r, and b keys for the buttons as well
 */

@@ -8,6 +8,9 @@
     <body>
         <div id="background">
             <h1 id="gameName"></h1>
+            <div id="score"></div>
+            <!--Show num at left and trial at top(can use score for trial)-->
+            <div id="secretNum"></div>
             <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
             <button class="introButton" onclick="back();"><strong>BACK</strong></button>
             <button class="introButton" id="pauseButton" onclick="pauseGame();"><strong>PAUSE</strong></button>
@@ -15,6 +18,27 @@
         </div>
         <div id="grid"></div>
         <canvas id="gameCanvas"></canvas>
+        <div class="box" id="box1" onclick="selectBox(this.id);">
+            <div class="num" id="num1"></div>
+        </div>
+        <div class="box" id="box2" onclick="selectBox(this.id);">
+            <div class="num" id="num2"></div>
+        </div>
+        <div class="box" id="box3" onclick="selectBox(this.id);">
+            <div class="num" id="num3"></div>
+        </div>
+        <div class="box" id="box4" onclick="selectBox(this.id);">
+            <div class="num" id="num4"></div>
+        </div>
+        <div class="box" id="box5" onclick="selectBox(this.id);">
+            <div class="num" id="num5"></div>
+        </div>
+        <div class="box" id="box6" onclick="selectBox(this.id);">
+            <div class="num" id="num6"></div>
+        </div>
+        <div class="box" id="box7" onclick="selectBox(this.id);">
+            <div class="num" id="num7"></div>
+        </div>
         <div id="instructionPage">
             <h1>Instructions</h1>
             <div id="instructText">
@@ -25,22 +49,46 @@
                 screen, the game will end and the screen will be transitioned back the title/introduction screen.
                 <br><br>
                 <strong>Protect the Bubble:</strong><br>
-
+                In Protect the Bubble, players would control the movements of a bubble(circle) using the mouse. However, there will be
+                obstacles moving down which the player has to avoid by moving the bubble to a safe spot where it would not come in
+                contact with the obstacles. Keep the bubble alive and try not not to burst it. The longer you do so, the more
+                points you would score.<br>
+                <img>
                 <br><br>
                 <strong>Square Up:</strong><br>
                 Square Up is a two player game where each player would use either the arrow keys or the W, A, S, and D keys to control
                 the movements of a square. Each player can move the square left to right and can also make it jump. Moreover, by pressing
                 either the S key or the down arrow key, the square will shrink, becoming a smaller square with a faster movement speed.
-                The objective of this game is to try to jump on top of the other player's square, and the first to do so wins
+                The objective of this game is to try to jump on top of the other player's square, and the first to do so wins.<br>
+                <img>
                 <br><br>
                 <strong>Trinity:</strong><br>
-
+                The game of Trinity is a game that requires absolute precision and concentration, testing the limit of your 
+                memory. In the game, there will be three triangles, which would light up in a timely and orderly fashion. After one of
+                the triangles lights up, the player must click on that very same triangle. If the player did not press on the correct
+                triangle, then the game is over. However, clicking on the right triangle proceeds the game, where another triangle
+                would again be light up. It is up to the player to remember to pattern of all the triangles that lighted up and click
+                on them in order of the light up sequence. The number in the middle would show the total score.<br>
+                <img>
                 <br><br>
                 <strong>Addition Equation:</strong><br>
-                
+                In this game, a secret 3-digit number will be randomly generated along with an addition equation that leads up to the
+                secret number answer. The objective of the game is to try to guess the correct formula at obtaining the secret number,
+                which will be shown on the screen. Each guess will be surrounded by a green, orange, or white colored box. A green box
+                indicates the number is used and placed in the correct position in the formula. An orange box indicates the number is
+                used but not placed in the correct position. A white box indicates the number is not being used at all in the equation.
+                You will have a total of five trials to complete the puzzle. If a digit is not used, just fill in 0 for the 
+                corresponding box.<br>
+                <img>
                 <br><br>
                 <strong>Code Smasher:</strong><br>
-
+                Just as its name suggested, Code Smasher includes the smashing of some blocks, which are programmed by codes. In the 
+                game, there will be a hammer falling down from above, reaching down to a target platform zone, which consists of white,
+                orange, and green layers. The player would have to react quickily and hit the space bar onces the hammer enters the 
+                target zones. Doing so, the hammer would stop falling, and the location on the zone where it end up will add points to
+                your total score: white zone has a single point, orange zone has 3 points, and green zone has 5 points. However, if the
+                hammer is stopped to early or too late(outside the white zone), then the game will end.<br>
+                <img>   
             </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
             <button class="introButton" onclick="back();"><strong>BACK</strong></button>
         </div>

@@ -84,7 +84,6 @@
     height: 70vh;
     overflow-y: scroll;
     text-align: left;
-    border: orange 4px solid;
 }
 ::-webkit-scrollbar {
     width: 10px;
@@ -96,7 +95,7 @@
     background: #555;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: white;
+    background: orange;
 }
 ::-webkit-scrollbar-corner{
     display: none;
@@ -122,4 +121,46 @@
     top: 12.5vh;
     width: 100vw;
     height: 70vh;
+}
+#score{
+    position: absolute;
+    font-size: 1.5em;
+    right: 2.5vw;
+    top: 5vh;
+}
+.box{
+    position: absolute;
+    width: 10vw;
+    height: 10vw;
+    top: 38.75vh;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border: 4px white solid;
+    color: white;
+    text-align: center;
+    font-size: 8em;
+}
+/*Add 11vw for same num and 15vw for different num*/
+#box1{
+    left: 5vw;
+}
+#box2{
+    left: 16vw;
+}
+#box3{
+    left: 34vw;
+}
+#box4{
+    left: 45vw;
+}
+#box5{
+    left: 63vw;
+}
+#box6{
+    left: 74vw;
+}
+#box7{
+    left: 85vw;
 }
