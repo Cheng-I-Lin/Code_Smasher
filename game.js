@@ -21,6 +21,7 @@ var trinityArr=[];
 //Uses players' inputs, if equal to trinityArr size then empty array and plus a move
 var trialArr=[];
 var addEquation=false;
+var secretAddition=[];
 var codeSmasher=false;
 //Negative one so at first one plus point
 var points=-1;
@@ -113,6 +114,8 @@ function gameMode(id){
     document.getElementById("intro").style.bottom="100vh";
     document.getElementById("instructionPage").style.bottom="100vh";
 }
+var answer=0;
+var tries=5;
 function drawGame(){
     let canvas=document.getElementById("gameCanvas");
     let ds=canvas.getContext("2d");
@@ -173,9 +176,11 @@ function drawGame(){
         ds.fillText(trialArr.length,window.innerWidth/2-25,grid.offsetHeight/2+80);
     }
     if(addEquation){
+        document.getElementById("secretNum").innerHTML="Answer: "+answer;
         ds.fillStyle="white";
         ds.font="100px Arial";
-        ds.fillText(trialArr.length,window.innerWidth/2-25,grid.offsetHeight/2+80);
+        ds.fillText("+",numBox[1].offsetLeft+numBox[1].offsetWidth+25,numBox[1].offsetTop+25);
+        ds.fillText("=",numBox[3].offsetLeft+numBox[3].offsetWidth+25,numBox[3].offsetTop+25);
     }
     if(codeSmasher){
         ds.fillStyle="brown";
@@ -225,7 +230,27 @@ document.addEventListener("keydown",function(key){
             controls1.right=true;
             break;
         case "Enter":
+            let shouldCheck=true;
             controls2.dash=false;
+            if(addEquation){
+                for(let i=0;i<number.length;i++){
+                    if(number[i].innerHTML=="?"){
+                        shouldCheck=false;
+                    }
+                }
+                if(shouldCheck&&!pause){
+                    for(let i=0;i<number.length;i++){
+                        if(parseInt(number[i].innerHTML)==secretAddition[i]){
+                            numBox[i].style.border="green 4px solid";
+                        } else if(secretAddition.includes(parseInt(number[i].innerHTML))){
+                            numBox[i].style.border="orange 4px solid";
+                        } else{
+                            numBox[i].style.border="white 4px solid";
+                        }
+                    }
+                    //document.getElementById("hi").innerHTML=number+"<br>"+secretAddition;
+                }
+            }
             break;
         case "Space":
             controls1.dash=false;
@@ -286,6 +311,46 @@ document.addEventListener("keyup",function(key){
                 player1.x+=200;
             }
             break;
+        case "Digit1":
+            if(!pause)
+            number[boxID].innerHTML=1;
+            break;
+        case "Digit2":
+            if(!pause)
+            number[boxID].innerHTML=2;
+            break;
+        case "Digit3":
+            if(!pause)
+            number[boxID].innerHTML=3;
+            break;
+        case "Digit4":
+            if(!pause)
+            number[boxID].innerHTML=4;
+            break;
+        case "Digit5":
+            if(!pause)
+            number[boxID].innerHTML=5;
+            break;
+        case "Digit6":
+            if(!pause)
+            number[boxID].innerHTML=6;
+            break;
+        case "Digit7":
+            if(!pause)
+            number[boxID].innerHTML=7;
+            break;
+        case "Digit8":
+            if(!pause)
+            number[boxID].innerHTML=8;
+            break;
+        case "Digit9":
+            if(!pause)
+            number[boxID].innerHTML=9;
+            break;
+        case "Digit0":
+            if(!pause)
+            number[boxID].innerHTML=0;
+            break;
         default:
             break;
     }
@@ -298,17 +363,20 @@ document.addEventListener("mousemove",function(mouse){
 });
 const numBox=document.getElementsByClassName("box");
 const number=document.getElementsByClassName("num");
-var boxID=0;
+//Make -1 so won't have default selection box
+var boxID=-1;
 function selectBox(id){
     //document.getElementById("hi").innerHTML=id.substring(id.length-1);
-    for(let i=0;i<numBox.length;i++){
-        if(i==parseInt(id.substring(id.length-1))-1){
-            numBox[i].style.backgroundColor="rgba(255, 255, 255, 0.5)";
-        } else{
-            numBox[i].style.backgroundColor="transparent";
+    if(!pause){
+        for(let i=0;i<numBox.length;i++){
+            if(i==parseInt(id.substring(id.length-1))-1){
+                numBox[i].style.backgroundColor="rgba(255, 255, 255, 0.5)";
+            } else{
+                numBox[i].style.backgroundColor="transparent";
+            }
         }
+        boxID=parseInt(id.substring(id.length-1))-1;
     }
-    boxID=parseInt(id.substring(id.length-1))-1;
 }
 function game(){
     let score=document.getElementById("score");
@@ -398,6 +466,16 @@ function game(){
         for(let i=0;i<numBox.length;i++){
             numBox[i].style.display="block";
         }
+        if(secretAddition.length!=7){
+            for(let i=0;i<4;i++){
+                secretAddition.push(Math.floor(Math.random()*9));
+            }
+            answer=(secretAddition[0]*10+secretAddition[1])+(secretAddition[2]*10+secretAddition[3]);
+            secretAddition.push(Math.floor(answer/100));
+            secretAddition.push(Math.floor((answer/10)%10));
+            secretAddition.push(Math.floor(answer%10));
+        }
+        //document.getElementById("hi").innerHTML=secretAddition;
     } else{
         for(let i=0;i<numBox.length;i++){
             numBox[i].style.display="none";
@@ -420,6 +498,14 @@ function back(){
     points=-1;
     obstacle.y=-obstacle.size;
     safeSpot.x=Math.random()*(grid.offsetWidth-safeSpot.size);
+    for(let i=0;i<number.length;i++){
+        number[i].innerHTML="?";
+    }
+    for(let i=0;i<numBox.length;i++){
+        numBox[i].style.backgroundColor="transparent";
+    }
+    secretAddition=[];
+    boxID=-1;
     squareUp=false;
     bubble=false;
     trinity=false;

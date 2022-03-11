@@ -164,3 +164,9 @@
 #box7{
     left: 85vw;
 }
+#secretNum{
+    position: absolute;
+    right: 2.5vw;
+    top: 5vh;
+    font-size: 1.5em;
+}
