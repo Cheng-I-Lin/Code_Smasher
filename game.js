@@ -30,7 +30,9 @@ var player1={
     x:0,
     y:0,
     ySpeed:0,
-    size:150
+    size:150,
+    radius:25,
+    dead:false
 }
 var player2={
     x:window.innerWidth-150,
@@ -42,11 +44,19 @@ var obstacle={
     y:0,
     size:80
 }
+//Initialize obstacle position
 obstacle.y=-obstacle.size;
 var safeSpot={
     x:Math.random()*(grid.offsetWidth-300),
     y:0,
     size:300
+}
+var platform={
+    x:window.innerWidth,
+    green:false,
+    orange:false,
+    white:false,
+    speed:2
 }
 var controls1={
     up:false,
@@ -131,8 +141,8 @@ function drawGame(){
         ds.fillRect(player2.x,player2.y,player2.size,player2.size);
     }
     if(bubble){
-        /*ds.fillStyle="transparent";
-        ds.fillRect(0,obstacle.y,window.innerWidth,obstacle.size);*/
+        ds.fillStyle="transparent";
+        ds.fillRect(0,obstacle.y,window.innerWidth,obstacle.size);
         ds.strokeStyle="orange";
         ds.beginPath();
         ds.moveTo(2,obstacle.y+2);
@@ -142,6 +152,8 @@ function drawGame(){
         ds.closePath();
         ds.lineWidth=4;
         ds.stroke();
+        ds.fillStyle="black";
+        ds.fillRect(safeSpot.x,safeSpot.y,safeSpot.size,obstacle.size);
         ds.beginPath();
         ds.moveTo(safeSpot.x-2,safeSpot.y);
         ds.lineTo(safeSpot.x-2,safeSpot.y+obstacle.size);
@@ -152,10 +164,12 @@ function drawGame(){
         ds.lineTo(safeSpot.x+safeSpot.size+2,safeSpot.y+obstacle.size);
         ds.closePath();
         ds.stroke();
-        ds.fillStyle="black";
-        ds.fillRect(safeSpot.x,safeSpot.y,safeSpot.size,obstacle.size);
-        ds.fillStyle="white";
-        ds.arc(player1.x,player1.y-grid.offsetTop,25,0,2*Math.PI);
+        if(player1.dead){
+            ds.fillStyle="red";
+        } else{
+            ds.fillStyle="white";
+        }
+        ds.arc(player1.x,player1.y-grid.offsetTop,player1.radius,0,2*Math.PI);
         ds.fill();
     }
     if(trinity){
@@ -176,7 +190,7 @@ function drawGame(){
         ds.fillText(trialArr.length,window.innerWidth/2-25,grid.offsetHeight/2+80);
     }
     if(addEquation){
-        document.getElementById("secretNum").innerHTML="Answer: "+answer;
+        document.getElementById("secretNum").innerHTML=Math.floor(answer/100)*100+" < Answer < "+Math.floor((answer+100)/100)*100;
         ds.fillStyle="white";
         ds.font="100px Arial";
         ds.fillText("+",numBox[1].offsetLeft+numBox[1].offsetWidth+25,numBox[1].offsetTop+25);
@@ -238,7 +252,7 @@ document.addEventListener("keydown",function(key){
                         shouldCheck=false;
                     }
                 }
-                if(shouldCheck&&!pause){
+                if(shouldCheck&&!pause&&parseInt(number[0].innerHTML)+parseInt(number[1].innerHTML)+parseInt(number[2].innerHTML)+parseInt(number[3].innerHTML)==parseInt(number[4].innerHTML)+parseInt(number[5].innerHTML)+parseInt(number[6].innerHTML)){
                     for(let i=0;i<number.length;i++){
                         if(parseInt(number[i].innerHTML)==secretAddition[i]){
                             numBox[i].style.border="green 4px solid";
@@ -383,17 +397,22 @@ function game(){
     if(bubble){
         score.style.display="block";
         score.innerHTML="Score: "+points;
-        player1.x=mouseX;
-        player1.y=mouseY;
-        obstacle.y+=2;
-        safeSpot.y=obstacle.y;
-        //Collision dectection
-        if(true){
-
-        }
-        if(obstacle.y>=grid.offsetHeight){
-            obstacle.y=0-obstacle.size;
-            safeSpot.x=Math.random()*(grid.offsetWidth-safeSpot.size);
+        if(!player1.dead){
+            player1.x=mouseX;
+            player1.y=mouseY;
+            obstacle.y+=2;
+            safeSpot.y=obstacle.y;
+            //Collision dectection
+            if(true){
+    
+            }
+            if(obstacle.y>=grid.offsetHeight){
+                obstacle.y=0-obstacle.size;
+                safeSpot.x=Math.random()*(grid.offsetWidth-safeSpot.size);
+            }
+            if((player1.x+player1.radius>=safeSpot.x+safeSpot.size||player1.x-player1.radius<=safeSpot.x)&&(player1.y-player1.radius-grid.offsetTop<=safeSpot.y+obstacle.size&&player1.y+player1.radius-grid.offsetTop>=safeSpot.y)){
+                player1.dead=true;
+            }
         }
     } else{
         score.style.display="none";
@@ -482,7 +501,7 @@ function game(){
         }
     }
     if(codeSmasher){
-        //Hammer falls
+        //Hammer falls, go sideways
     }
 }
 function instruct(){
@@ -497,12 +516,14 @@ function back(){
     player2.y=0;
     points=-1;
     obstacle.y=-obstacle.size;
+    player1.dead=false;
     safeSpot.x=Math.random()*(grid.offsetWidth-safeSpot.size);
     for(let i=0;i<number.length;i++){
         number[i].innerHTML="?";
     }
     for(let i=0;i<numBox.length;i++){
         numBox[i].style.backgroundColor="transparent";
+        numBox[i].style.border="white 4px solid";
     }
     secretAddition=[];
     boxID=-1;
@@ -529,7 +550,7 @@ function restartGame(){
 
 }
 setInterval(function(){
-    if(bubble&&!pause){
+    if(bubble&&!pause&&!player1.dead){
         points++;
     }
 },1000);
@@ -551,4 +572,5 @@ Notable game ideas: Three dots form in line, player move all dots to move
 
 Consider only use one dash in square up, need to think what migh happen when two dash and collide
 can see if want to use p,r, and b keys for the buttons as well
+See how to solve bubble collision problem
 */
