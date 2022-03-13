@@ -39,7 +39,8 @@ var player2={
     x:window.innerWidth-150,
     y:0,
     ySpeed:0,
-    size:150
+    size:150,
+    dead:false
 }
 var obstacle={
     y:0,
@@ -146,9 +147,17 @@ function drawGame(){
     canvas.height=grid.offsetHeight;
     ds.clearRect(canvas.left,canvas.top,canvas.width,canvas.height);
     if(squareUp){
-        ds.fillStyle="white";
+        if(player1.dead){
+            ds.fillStyle="red";
+        } else{
+            ds.fillStyle="white";
+        }
         ds.fillRect(player1.x,player1.y,player1.size,player1.size);
-        ds.fillStyle="orange";
+        if(player2.dead){
+            ds.fillStyle="red";
+        } else{
+            ds.fillStyle="orange";
+        }
         ds.fillRect(player2.x,player2.y,player2.size,player2.size);
     }
     if(bubble){
@@ -350,7 +359,7 @@ document.addEventListener("keydown",function(key){
             break;
         case "Enter":
             let shouldCheck=true;
-            if(squareUp){
+            if(squareUp&&!player1.dead&&!player2.dead){
                 controls2.dash=false;
             }
             if(addEquation){
@@ -374,7 +383,7 @@ document.addEventListener("keydown",function(key){
             }
             break;
         case "Space":
-            if(squareUp){
+            if(squareUp&&!player1.dead&&!player2.dead){
                 controls1.dash=false;
             }
             break;
@@ -415,7 +424,7 @@ document.addEventListener("keyup",function(key){
             controls1.right=false;
             break;
         case "Enter":
-            if(squareUp){
+            if(squareUp&&!player1.dead&&!player2.dead){
                 controls2.dash=true;
                 if(controls2.left){
                     player2.x-=200;
@@ -427,7 +436,7 @@ document.addEventListener("keyup",function(key){
             }
             break;
         case "Space":
-            if(squareUp){
+            if(squareUp&&!player1.dead&&!player2.dead){
                 controls1.dash=true;
                 if(controls1.left){
                     player1.x-=200;
@@ -547,7 +556,7 @@ function game(){
     } else{
         score.style.display="none";
     }
-    if(squareUp){
+    if(squareUp&&!player1.dead&&!player2.dead){
         //Gravity pull
         player1.ySpeed+=0.85;
         player2.ySpeed+=0.85;
@@ -606,10 +615,7 @@ function game(){
             player2.jump=false;
             player2.ySpeed=0;
             player2.y=grid.offsetHeight-player2.size;
-        }    
-        if(player1.x+player1.size>=player2.x&&(player1.y<=player2.y+player2.size&&player1.y+player1.size>=player2.y)){
-            player1.x=player2.x-player1.size;
-        }   
+        }  
     }
     if(trinity&&!player1.dead){
         //Check if all clicks are correct
@@ -709,6 +715,11 @@ function back(){
     document.getElementById("intro").style.bottom="0vh";
     document.getElementById("instructionPage").style.bottom="0vh";
     restartGame();
+    squareUp=false;
+    bubble=false;
+    trinity=false;
+    addEquation=false;
+    codeSmasher=false;
 }
 function pauseGame(){
     let pauseButton=document.getElementById("pauseButton");
@@ -728,6 +739,7 @@ function restartGame(){
     points=-1;
     obstacle.y=-obstacle.size;
     player1.dead=false;
+    player2.dead=false;
     safeSpot.x=Math.random()*(grid.offsetWidth-safeSpot.size);
     for(let i=0;i<number.length;i++){
         number[i].innerHTML="?";
@@ -744,11 +756,6 @@ function restartGame(){
     smashPoint=0;
     platform.x=window.innerWidth+20;
     platform.speed=2;
-    squareUp=false;
-    bubble=false;
-    trinity=false;
-    addEquation=false;
-    codeSmasher=false;
     //Unpause game so that canvas can change
     pause=false;
     document.getElementById("pauseButton").style.backgroundColor="rgb(255, 212, 147)";
@@ -758,6 +765,17 @@ setInterval(function(){
         points++;
     }
 },1000);
+//Use this so checks collision faster
+setInterval(function(){
+    if(squareUp&&!player1.dead&&!player2.dead){
+        if((player1.y+player1.size>=player2.y&&player1.y+player1.size<=player2.y+20)&&(player1.x<=player2.x+player2.size&&player1.x+player1.size>=player2.x)&&player1.jump&&player1.ySpeed>0){
+            player2.dead=true;
+        }
+        if((player2.y+player2.size>=player1.y&&player2.y+player2.size<=player1.y+20)&&(player2.x<=player1.x+player1.size&&player2.x+player2.size>=player1.x)&&player2.jump&&player2.ySpeed>0){
+            player1.dead=true;
+        }
+    }
+});
 setInterval(function(){
     if(!pause){
         drawGame();
