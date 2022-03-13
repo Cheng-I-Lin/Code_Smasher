@@ -51,6 +51,14 @@ var safeSpot={
     y:0,
     size:300
 }
+var triangle={
+    t1:false,
+    t2:false,
+    t3:false,
+    color1:false,
+    color2:false,
+    color3:false
+}
 var platform={
     x:window.innerWidth,
     green:false,
@@ -173,21 +181,68 @@ function drawGame(){
         ds.fill();
     }
     if(trinity){
-        ds.fillStyle="white";
+        ds.beginPath();
         ds.moveTo(window.innerWidth/2,70);
         ds.lineTo(window.innerWidth/2-100,170);
         ds.lineTo(window.innerWidth/2+100,170);
+        ds.closePath();
+        if(triangle.color1){
+            ds.fillStyle="gold";
+        } else if(ds.isPointInPath(mouseX,mouseY-grid.offsetTop)){
+            //Determines if the mouse is over the triangle
+            ds.fillStyle="orange";
+            triangle.t1=true;
+        } else{
+            ds.fillStyle="white";
+            triangle.t1=false;
+        }
+        if(player1.dead){
+            ds.fillStyle="red";
+        }
         ds.fill();
+        ds.beginPath();
         ds.moveTo(window.innerWidth/4,grid.offsetHeight/2+70);
         ds.lineTo(window.innerWidth/4-100,grid.offsetHeight/2+170);
         ds.lineTo(window.innerWidth/4+100,grid.offsetHeight/2+170);
+        ds.closePath();
+        if(triangle.color2){
+            ds.fillStyle="gold";
+        } else if(ds.isPointInPath(mouseX,mouseY-grid.offsetTop)){
+            ds.fillStyle="orange";
+            triangle.t2=true;
+        } else{
+            ds.fillStyle="white";
+            triangle.t2=false;
+        }
+        if(player1.dead){
+            ds.fillStyle="red";
+        }
         ds.fill();
+        ds.beginPath();
         ds.moveTo(window.innerWidth-window.innerWidth/4,grid.offsetHeight/2+70);
         ds.lineTo(window.innerWidth-window.innerWidth/4-100,grid.offsetHeight/2+170);
         ds.lineTo(window.innerWidth-window.innerWidth/4+100,grid.offsetHeight/2+170);
+        ds.closePath();
+        if(triangle.color3){
+            ds.fillStyle="gold";
+        } else if(ds.isPointInPath(mouseX,mouseY-grid.offsetTop)){
+            ds.fillStyle="orange";
+            triangle.t3=true;
+        } else{
+            ds.fillStyle="white";
+            triangle.t3=false;
+        }
+        if(player1.dead){
+            ds.fillStyle="red";
+        }
         ds.fill();
+        ds.fillStyle="white";
         ds.font="100px Arial";
-        ds.fillText(trialArr.length,window.innerWidth/2-25,grid.offsetHeight/2+80);
+        if(trialArr.length>=9){
+            ds.fillText(trinityArr.length,window.innerWidth/2-50,grid.offsetHeight/2+80);
+        } else{
+            ds.fillText(trinityArr.length,window.innerWidth/2-25,grid.offsetHeight/2+80);
+        }
     }
     if(addEquation){
         document.getElementById("secretNum").innerHTML=Math.floor(answer/100)*100+" < Answer < "+Math.floor((answer+100)/100)*100;
@@ -207,6 +262,17 @@ function drawGame(){
         ds.fillRect(window.innerWidth/2+100,player1.y+200,25,100);
     }
 }
+//Determine if triangle clicked or not
+document.addEventListener("click",function(){
+    if(triangle.t1){
+        //document.getElementById("hi").innerHTML=trialArr;
+        trialArr.push(0);
+    } else if(triangle.t2){
+        trialArr.push(1);
+    } else if(triangle.t3){
+        trialArr.push(2);
+    }
+});
 document.addEventListener("keydown",function(key){
     switch(key.code){
         case "ArrowUp":
@@ -374,6 +440,7 @@ var mouseY=0;
 document.addEventListener("mousemove",function(mouse){
     mouseX=mouse.x;
     mouseY=mouse.y;
+    //document.getElementById("hi").innerHTML=index;
 });
 const numBox=document.getElementsByClassName("box");
 const number=document.getElementsByClassName("num");
@@ -477,9 +544,22 @@ function game(){
             player2.ySpeed=0;
             player2.y=grid.offsetHeight-player2.size;
         }    
+        if(player1.x+player1.size>=player2.x&&(player1.y<=player2.y+player2.size&&player1.y+player1.size>=player2.y)){
+            player1.x=player2.x-player1.size;
+        }   
     }
-    if(trinity){
-
+    if(trinity&&!player1.dead){
+        //Check if all clicks are correct
+        for(let i=0;i<trialArr.length;i++){
+            if(trialArr[i]!=trinityArr[i]){
+                player1.dead=true;
+            }
+        }
+        if(trialArr.length==trinityArr.length){
+            trinityArr.push(Math.floor(Math.random()*3));
+            trialArr=[];
+            index=0;
+        }
     }
     if(addEquation){
         for(let i=0;i<numBox.length;i++){
@@ -504,6 +584,37 @@ function game(){
         //Hammer falls, go sideways
     }
 }
+var index=0;
+//Colors the triangles in trinity
+setInterval(function(){
+    if(trinity&&!pause){
+        triangle.color1=false;
+        triangle.color2=false;
+        triangle.color3=false;
+        switch(trinityArr[index]){
+            case 0:
+                triangle.color1=true;
+                triangle.color2=false;
+                triangle.color3=false;
+                break;
+            case 1:
+                triangle.color1=false;
+                triangle.color2=true;
+                triangle.color3=false;
+                break;
+            case 2:
+                triangle.color1=false;
+                triangle.color2=false;
+                triangle.color3=true;
+                break;
+            default:
+                break;
+        }
+        if(index!=trinityArr.length){
+            index++;
+        }
+    }
+},800);
 function instruct(){
     document.getElementById("intro").style.bottom="100vh";
 }
@@ -527,6 +638,9 @@ function back(){
     }
     secretAddition=[];
     boxID=-1;
+    trinityArr=[];
+    trialArr=[];
+    index=0;
     squareUp=false;
     bubble=false;
     trinity=false;
