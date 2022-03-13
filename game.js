@@ -25,6 +25,7 @@ var secretAddition=[];
 var codeSmasher=false;
 //Negative one so at first one plus point
 var points=-1;
+var smashPoint=0;
 //The two squares
 var player1={
     x:0,
@@ -60,10 +61,12 @@ var triangle={
     color3:false
 }
 var platform={
-    x:window.innerWidth,
+    //window.innerWidth+20 because of the draw is 20 less than x position
+    x:window.innerWidth+20,
     green:false,
     orange:false,
     white:false,
+    size:250,
     speed:2
 }
 var controls1={
@@ -250,27 +253,63 @@ function drawGame(){
         ds.font="100px Arial";
         ds.fillText("+",numBox[1].offsetLeft+numBox[1].offsetWidth+25,numBox[1].offsetTop+25);
         ds.fillText("=",numBox[3].offsetLeft+numBox[3].offsetWidth+25,numBox[3].offsetTop+25);
+    } else{
+        document.getElementById("secretNum").innerHTML="";
     }
     if(codeSmasher){
-        ds.fillStyle="brown";
-        ds.fillRect(window.innerWidth/2-37.5,player1.y,75,200);
+        ds.shadowBlur=0;
+        ds.fillStyle="rgba(255,255,255,0.15)";
+        ds.fillRect(platform.x-20,0,70,grid.offsetHeight);
+        ds.fillRect(platform.x+platform.size-40,0,70,grid.offsetHeight);
         ds.fillStyle="white";
-        //Minus 50 due to the half of width
-        ds.fillRect(window.innerWidth/2-100,player1.y+200,200,100);
+        ds.shadowBlur=75;
+        ds.shadowColor="rgba(255, 255, 255, 1)";
+        ds.fillRect(platform.x-20,0,10,grid.offsetHeight);
+        ds.fillRect(platform.x+platform.size+20,0,10,grid.offsetHeight);
+        ds.shadowBlur=0;
+        ds.fillStyle="rgba(255,255,0,0.15)";
+        ds.fillRect(platform.x+50,0,60,grid.offsetHeight);
+        ds.fillRect(platform.x+platform.size-100,0,50,grid.offsetHeight);
         ds.fillStyle="orange";
-        ds.fillRect(window.innerWidth/2-125,player1.y+200,25,100);
-        ds.fillRect(window.innerWidth/2+100,player1.y+200,25,100);
+        ds.shadowBlur=75;
+        ds.shadowColor="rgba(255, 255, 0, 1)";
+        ds.fillRect(platform.x+50,0,10,grid.offsetHeight);
+        ds.fillRect(platform.x+platform.size-50,0,10,grid.offsetHeight);
+        ds.shadowBlur=0;
+        ds.fillStyle="rgba(0,255,0,0.15)";
+        ds.fillRect(platform.x+110,0,30,grid.offsetHeight);
+        ds.fillStyle="green";
+        ds.shadowBlur=75;
+        ds.shadowColor="rgba(0, 255, 0, 1)";
+        ds.fillRect(platform.x+110,0,10,grid.offsetHeight);
+        ds.fillRect(platform.x+platform.size-110,0,10,grid.offsetHeight);
+        ds.shadowBlur=30;
+        ds.shadowColor="rgba(255, 0, 0, 1)";
+        ds.fillStyle="brown";
+        ds.fillRect(50,window.innerHeight/2-grid.offsetTop-25,175,50);
+        if(player1.dead){
+            ds.fillStyle="red";
+        } else{
+            ds.fillStyle="black";
+        }
+        //Minus 50 due to the half of width
+        ds.fillRect(window.innerWidth/5-100,window.innerHeight/2-grid.offsetTop-75,100,150);
+        ds.fillStyle="gold";
+        ds.fillRect(window.innerWidth/5-100,window.innerHeight/2-grid.offsetTop-100,100,25);
+        ds.fillRect(window.innerWidth/5-100,window.innerHeight/2-grid.offsetTop+75,100,25);
     }
 }
 //Determine if triangle clicked or not
 document.addEventListener("click",function(){
-    if(triangle.t1){
-        //document.getElementById("hi").innerHTML=trialArr;
-        trialArr.push(0);
-    } else if(triangle.t2){
-        trialArr.push(1);
-    } else if(triangle.t3){
-        trialArr.push(2);
+    if(trinity&&!pause&&!player1.dead){
+        if(triangle.t1){
+            //document.getElementById("hi").innerHTML=trialArr;
+            trialArr.push(0);
+        } else if(triangle.t2){
+            trialArr.push(1);
+        } else if(triangle.t3){
+            trialArr.push(2);
+        }
     }
 });
 document.addEventListener("keydown",function(key){
@@ -311,7 +350,9 @@ document.addEventListener("keydown",function(key){
             break;
         case "Enter":
             let shouldCheck=true;
-            controls2.dash=false;
+            if(squareUp){
+                controls2.dash=false;
+            }
             if(addEquation){
                 for(let i=0;i<number.length;i++){
                     if(number[i].innerHTML=="?"){
@@ -333,7 +374,9 @@ document.addEventListener("keydown",function(key){
             }
             break;
         case "Space":
-            controls1.dash=false;
+            if(squareUp){
+                controls1.dash=false;
+            }
             break;
         default:
             break;
@@ -372,23 +415,43 @@ document.addEventListener("keyup",function(key){
             controls1.right=false;
             break;
         case "Enter":
-            controls2.dash=true;
-            if(controls2.left){
-                player2.x-=200;
-            } else if(controls2.right){
-                player2.x+=200;
-            } else{
-                player2.x-=200;
+            if(squareUp){
+                controls2.dash=true;
+                if(controls2.left){
+                    player2.x-=200;
+                } else if(controls2.right){
+                    player2.x+=200;
+                } else{
+                    player2.x-=200;
+                }
             }
             break;
         case "Space":
-            controls1.dash=true;
-            if(controls1.left){
-                player1.x-=200;
-            } else if(controls1.right){
-                player1.x+=200;
-            } else{
-                player1.x+=200;
+            if(squareUp){
+                controls1.dash=true;
+                if(controls1.left){
+                    player1.x-=200;
+                } else if(controls1.right){
+                    player1.x+=200;
+                } else{
+                    player1.x+=200;
+                }
+            }
+            //Checks if hit the platform
+            if(codeSmasher&&!player1.dead){
+                if(window.innerWidth/5<platform.x-20||window.innerWidth/5>platform.x+platform.size+30){
+                    player1.dead=true;
+                } else{
+                    if((window.innerWidth/5>=platform.x-20&&window.innerWidth/5<=platform.x+50)||(window.innerWidth/5>=platform.x+platform.size-40&&window.innerWidth/5<=platform.x+platform.size+30)){
+                        smashPoint++;
+                    } else if((window.innerWidth/5>=platform.x+50&&window.innerWidth/5<=platform.x+110)||(window.innerWidth/5>=platform.x+platform.size-100&&window.innerWidth/5<=platform.x+platform.size-40)){
+                        smashPoint+=3;
+                    } else{
+                        smashPoint+=5;
+                    }
+                    //Returns once clicked so player can't keep clicking to stack up points
+                    platform.x=window.innerWidth+20;
+                }
             }
             break;
         case "Digit1":
@@ -581,7 +644,31 @@ function game(){
         }
     }
     if(codeSmasher){
-        //Hammer falls, go sideways
+        score.style.display="block";
+        if(!player1.dead){
+            score.innerHTML="Score: "+smashPoint;
+            if(smashPoint>999){
+                platform.speed=50;
+            } else if(smashPoint>749){
+                platform.speed=40;
+            } else if(smashPoint>499){
+                platform.speed=30;
+            } else if(smashPoint>249){
+                platform.speed=20;
+            } else if(smashPoint>99){
+                platform.speed=10;
+            } else if(smashPoint>49){
+                platform.speed=5;
+            } else if(smashPoint>24){
+                platform.speed=3;
+            }
+            //Hammer goes sideways
+            platform.x-=platform.speed;
+            //Game ends if passes the last white mark
+            if(platform.x+platform.size+30<=0){
+                player1.dead=true;
+            }
+        }
     }
 }
 var index=0;
@@ -621,6 +708,19 @@ function instruct(){
 function back(){
     document.getElementById("intro").style.bottom="0vh";
     document.getElementById("instructionPage").style.bottom="0vh";
+    restartGame();
+}
+function pauseGame(){
+    let pauseButton=document.getElementById("pauseButton");
+    if(!pause){
+        pause=true;
+        pauseButton.style.backgroundColor="orange";
+    } else{
+        pause=false;
+        pauseButton.style.backgroundColor="rgb(255, 212, 147)";
+    }
+}
+function restartGame(){
     player1.x=0;
     player1.y=0;
     player2.x=window.innerWidth-player2.size;
@@ -641,6 +741,9 @@ function back(){
     trinityArr=[];
     trialArr=[];
     index=0;
+    smashPoint=0;
+    platform.x=window.innerWidth+20;
+    platform.speed=2;
     squareUp=false;
     bubble=false;
     trinity=false;
@@ -649,19 +752,6 @@ function back(){
     //Unpause game so that canvas can change
     pause=false;
     document.getElementById("pauseButton").style.backgroundColor="rgb(255, 212, 147)";
-}
-function pauseGame(){
-    let pauseButton=document.getElementById("pauseButton");
-    if(!pause){
-        pause=true;
-        pauseButton.style.backgroundColor="orange";
-    } else{
-        pause=false;
-        pauseButton.style.backgroundColor="rgb(255, 212, 147)";
-    }
-}
-function restartGame(){
-
 }
 setInterval(function(){
     if(bubble&&!pause&&!player1.dead){
@@ -687,4 +777,5 @@ Notable game ideas: Three dots form in line, player move all dots to move
 Consider only use one dash in square up, need to think what migh happen when two dash and collide
 can see if want to use p,r, and b keys for the buttons as well
 See how to solve bubble collision problem
+Can't just click restart because all mode will be turned off, think how to solve it
 */
