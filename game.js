@@ -504,6 +504,15 @@ document.addEventListener("keyup",function(key){
             if(!pause)
             number[boxID].innerHTML=0;
             break;
+        case "KeyR":
+            restartGame();
+            break;
+        case "KeyP":
+            pauseGame();
+            break;
+        case "KeyB":
+            back();
+            break;
         default:
             break;
     }
