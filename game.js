@@ -44,7 +44,8 @@ var player2={
 }
 var obstacle={
     y:0,
-    size:80
+    size:80,
+    speed:2
 }
 //Initialize obstacle position
 obstacle.y=-obstacle.size;
@@ -536,15 +537,30 @@ function game(){
     if(bubble){
         score.style.display="block";
         score.innerHTML="Score: "+points;
+        if(smashPoint>249){
+            obstacle.speed=15;
+        } else if(smashPoint>199){
+            obstacle.speed=10;
+        } else if(smashPoint>174){
+            obstacle.speed=9;
+        } else if(smashPoint>149){
+            obstacle.speed=8;
+        } else if(smashPoint>124){
+            obstacle.speed=7;
+        } else if(smashPoint>99){
+            obstacle.speed=6;
+        } else if(smashPoint>74){
+            obstacle.speed=5;
+        } else if(smashPoint>49){
+            obstacle.speed=4;
+        } else if(points>24){
+            obstacle.speed=3;
+        }
         if(!player1.dead){
             player1.x=mouseX;
             player1.y=mouseY;
-            obstacle.y+=2;
+            obstacle.y+=obstacle.speed;
             safeSpot.y=obstacle.y;
-            //Collision dectection
-            if(true){
-    
-            }
             if(obstacle.y>=grid.offsetHeight){
                 obstacle.y=0-obstacle.size;
                 safeSpot.x=Math.random()*(grid.offsetWidth-safeSpot.size);
@@ -756,6 +772,7 @@ function restartGame(){
     smashPoint=0;
     platform.x=window.innerWidth+20;
     platform.speed=2;
+    obstacle.speed=2;
     //Unpause game so that canvas can change
     pause=false;
     document.getElementById("pauseButton").style.backgroundColor="rgb(255, 212, 147)";
