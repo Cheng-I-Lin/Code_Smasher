@@ -258,7 +258,7 @@ function drawGame(){
         }
     }
     if(addEquation){
-        document.getElementById("secretNum").innerHTML=Math.floor(answer/100)*100+" < Answer < "+Math.floor((answer+100)/100)*100;
+        document.getElementById("secretNum").innerHTML=Math.floor(answer/10)*10+" < Answer < "+(Math.floor(answer/10)*10+10);
         ds.fillStyle="white";
         ds.font="100px Arial";
         ds.fillText("+",numBox[1].offsetLeft+numBox[1].offsetWidth+25,numBox[1].offsetTop+25);
@@ -814,5 +814,5 @@ Notable game ideas: Three dots form in line, player move all dots to move
 Consider only use one dash in square up, need to think what migh happen when two dash and collide
 can see if want to use p,r, and b keys for the buttons as well
 See how to solve bubble collision problem
-Can't just click restart because all mode will be turned off, think how to solve it
+See if want to make hard modes for add equation
 */
