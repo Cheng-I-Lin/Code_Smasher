@@ -750,6 +750,8 @@ function pauseGame(){
 function restartGame(){
     player1.x=0;
     player1.y=0;
+    player1.ySpeed=0;
+    player2.ySpeed=0;
     player2.x=window.innerWidth-player2.size;
     player2.y=0;
     points=-1;
