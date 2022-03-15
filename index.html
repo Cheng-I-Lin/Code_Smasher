@@ -53,7 +53,7 @@
                 obstacles moving down which the player has to avoid by moving the bubble to a safe spot where it would not come in
                 contact with the obstacles. Keep the bubble alive and try not not to burst it. The longer you do so, the more
                 points you would score.<br>
-                <img style="width: 75vw;" src="imgBubble.png">
+                <img style="width: 85vw;" src="imgBubble.png">
                 <br><br>
                 <strong>Square Up:</strong><br>
                 Square Up is a two player game where each player would use either the arrow keys or the W, A, S, and D keys to control
@@ -61,7 +61,7 @@
                 either the S key or the down arrow key, the square will shrink, becoming a smaller square with a faster movement speed.
                 Lastly, the players can also press either the space or the enter key to make the square dash forward. The objective of 
                 this game is to try to jump on top of the other player's square, and the first to do so wins.<br>
-                <img style="width: 75vw;" src="imgSquareUp.png">
+                <img style="width: 85vw;" src="imgSquareUp.png">
                 <br><br>
                 <strong>Trinity:</strong><br>
                 The game of Trinity is a game that requires absolute precision and concentration, testing the limit of your 
@@ -70,7 +70,7 @@
                 triangle, then the game is over. However, clicking on the right triangle proceeds the game, where another triangle
                 would again be light up. It is up to the player to remember to pattern of all the triangles that lighted up and click
                 on them in order of the light up sequence. The number in the middle would show the total score.<br>
-                <img style="width: 75vw;" src="imgTrinity.png">
+                <img style="width: 85vw;" src="imgTrinity.png">
                 <br><br>
                 <strong>Addition Equation:</strong><br>
                 In this game, a secret 3-digit number will be randomly generated along with an addition equation that leads up to the
@@ -78,8 +78,9 @@
                 which the player will be given a clue shown on the screen. Each guess will be surrounded by a green, orange, or white colored box. A green box
                 indicates the number is used and placed in the correct position in the formula. An orange box indicates the number is
                 used but not placed in the correct position. A white box indicates the number is not being used at all in the equation.
-                If a digit is not used, just fill in 0 for the corresponding box. To check for the answer, press enter.<br>
-                <img style="width: 75vw;" src="imgAddEquation.png">
+                If a digit is not used, just fill in 0 for the corresponding box. To check for the answer, press enter. By clicking with
+                the right mouse key, hard mode will be activated, providing less clues in the game.<br>
+                <img style="width: 85vw;" src="imgAddEquation.png">
                 <br><br>
                 <strong>Code Smasher:</strong><br>
                 Just as its name suggested, Code Smasher includes the smashing of some blocks, which are programmed by codes. In the 
@@ -88,7 +89,7 @@
                 target zones. Doing so, the hammer would stop moving, and the location on the zone where it end up will add points to
                 your total score: white zone has a single point, orange zone has 3 points, and green zone has 5 points. However, if the
                 hammer is stopped to early or too late(outside the white zone), then the game will end.<br>
-                <img style="width: 75vw;" src="imgCodeSmash.png">   
+                <img style="width: 85vw;" src="imgCodeSmash.png">   
             </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
             <button class="introButton" onclick="back();"><strong>BACK [B]</strong></button>
         </div>
@@ -100,7 +101,7 @@
             <img class="shape" id="square" src="square.png" onclick="gameMode(this.id);">
             <img class="shape" id="triangle" src="triangle.png" onclick="gameMode(this.id);">
             <img class="shape" id="circle" src="circle.png" onclick="gameMode(this.id);">
-            <img class="shape" id="plus" src="plus.png" onclick="gameMode(this.id);">
+            <img class="shape" id="plus" src="plus.png" onmousedown="hardMode(event)" onclick="gameMode(this.id);">
             <!--Redirects to the home page website-->
             <button class="introButton" id="start" onclick="location.href='https://cheng-i-lin.github.io'"><strong>MAIN WEBSITE</strong></button>
             <button class="introButton" id="instructions" onclick="instruct();"><strong>INSTRUCTIONS</strong></button>

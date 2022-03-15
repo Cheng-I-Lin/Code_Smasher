@@ -34,7 +34,8 @@ var player1={
     size:150,
     radius:25,
     dead:false,
-    color:"white"
+    color:"white",
+    hard:false
 }
 var player2={
     x:window.innerWidth-150,
@@ -260,7 +261,11 @@ function drawGame(){
         }
     }
     if(addEquation){
-        document.getElementById("secretNum").innerHTML=Math.floor(answer/10)*10+" < Answer < "+(Math.floor(answer/10)*10+10);
+        if(player1.hard){
+            document.getElementById("secretNum").innerHTML=Math.floor(answer/100)*100+" < Answer < "+(Math.floor(answer/100)*100+100);
+        } else{
+            document.getElementById("secretNum").innerHTML=Math.floor(answer/10)*10+" < Answer < "+(Math.floor(answer/10)*10+10);
+        }
         ds.fillStyle="white";
         ds.font="100px Arial";
         ds.fillText("+",numBox[1].offsetLeft+numBox[1].offsetWidth+25,numBox[1].offsetTop+25);
@@ -526,6 +531,13 @@ document.addEventListener("mousemove",function(mouse){
     mouseY=mouse.y;
     //document.getElementById("hi").innerHTML=index;
 });
+//Turns on hard mode for addition equation
+function hardMode(event){
+    if(event.button==2){
+        player1.hard=true;
+        gameMode("plus");
+    }
+}
 document.addEventListener("click",function(mouse){
     if(squareUp&&!player1.dead&&!player2.dead){
         if((mouse.x>=player1.x&&mouse.x<=player1.x+player1.size)&&(mouse.y-grid.offsetTop>=player1.y&&mouse.y-grid.offsetTop<=player1.y+player1.size)){
@@ -773,6 +785,7 @@ function back(){
     trinity=false;
     addEquation=false;
     codeSmasher=false;
+    player1.hard=false;
 }
 function pauseGame(){
     let pauseButton=document.getElementById("pauseButton");
@@ -851,5 +864,4 @@ Try using other languages as well, like c++, python, unity
 Notable game ideas: Three dots form in line, player move all dots to move
 
 See how to solve bubble collision problem
-See if want to make hard modes for add equation
 */
