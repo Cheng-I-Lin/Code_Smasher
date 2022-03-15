@@ -33,14 +33,16 @@ var player1={
     ySpeed:0,
     size:150,
     radius:25,
-    dead:false
+    dead:false,
+    color:"white"
 }
 var player2={
     x:window.innerWidth-150,
     y:0,
     ySpeed:0,
     size:150,
-    dead:false
+    dead:false,
+    color:"orange"
 }
 var obstacle={
     y:0,
@@ -151,13 +153,13 @@ function drawGame(){
         if(player1.dead){
             ds.fillStyle="red";
         } else{
-            ds.fillStyle="white";
+            ds.fillStyle=player1.color;
         }
         ds.fillRect(player1.x,player1.y,player1.size,player1.size);
         if(player2.dead){
             ds.fillStyle="red";
         } else{
-            ds.fillStyle="orange";
+            ds.fillStyle=player2.color;
         }
         ds.fillRect(player2.x,player2.y,player2.size,player2.size);
     }
@@ -524,6 +526,32 @@ document.addEventListener("mousemove",function(mouse){
     mouseY=mouse.y;
     //document.getElementById("hi").innerHTML=index;
 });
+document.addEventListener("click",function(mouse){
+    if(squareUp&&!player1.dead&&!player2.dead){
+        if((mouse.x>=player1.x&&mouse.x<=player1.x+player1.size)&&(mouse.y-grid.offsetTop>=player1.y&&mouse.y-grid.offsetTop<=player1.y+player1.size)){
+            if(player1.color=="white"){
+                player1.color="orange";
+            } else if(player1.color=="orange"){
+                player1.color="green";
+            } else if(player1.color=="green"){
+                player1.color="teal";
+            } else{
+                player1.color="white";
+            }
+        }
+        if((mouse.x>=player2.x&&mouse.x<=player2.x+player2.size)&&(mouse.y-grid.offsetTop>=player2.y&&mouse.y-grid.offsetTop<=player2.y+player2.size)){
+            if(player2.color=="white"){
+                player2.color="orange";
+            } else if(player2.color=="orange"){
+                player2.color="green";
+            } else if(player2.color=="green"){
+                player2.color="teal";
+            } else{
+                player2.color="white";
+            }
+        }
+    }
+});
 const numBox=document.getElementsByClassName("box");
 const number=document.getElementsByClassName("num");
 //Make -1 so won't have default selection box
@@ -757,6 +785,8 @@ function pauseGame(){
     }
 }
 function restartGame(){
+    player1.color="white";
+    player2.color="orange";
     player1.x=0;
     player1.y=0;
     player1.ySpeed=0;
@@ -820,8 +850,6 @@ Try using other languages as well, like c++, python, unity
 5. Code Smasher(title card): fall down, user click on time to stop hammer at an exact moment, breaks something, moves on
 Notable game ideas: Three dots form in line, player move all dots to move
 
-Consider only use one dash in square up, need to think what migh happen when two dash and collide
-can see if want to use p,r, and b keys for the buttons as well
 See how to solve bubble collision problem
 See if want to make hard modes for add equation
 */
