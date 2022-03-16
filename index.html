@@ -71,7 +71,9 @@
                 the triangles lights up, the player must click on that very same triangle. If the player did not press on the correct
                 triangle, then the game is over. However, clicking on the right triangle proceeds the game, where another triangle
                 would again be light up. It is up to the player to remember to pattern of all the triangles that lighted up and click
-                on them in order of the light up sequence. The number in the middle would show the total score.<br>
+                on them in order of the light up sequence. The number in the middle would show the total score. By clicking with the 
+                right mouse key, hard mode will be activated, lighting up each triangle with a faster speed, forcing the players to
+                react faster.<br>
                 <img style="width: 85vw;" src="imgTrinity.png">
                 <br><br>
                 <strong>Addition Equation:</strong><br>
@@ -103,7 +105,7 @@
             <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
             <h1 id="chooseTitle">Select a Game Mode</h1>
             <img class="shape" id="square" src="square.png" onmousedown="noDash(event)" onclick="gameMode(this.id);">
-            <img class="shape" id="triangle" src="triangle.png" onclick="gameMode(this.id);">
+            <img class="shape" id="triangle" src="triangle.png" onmousedown="fasterTrinity(event)" onclick="gameMode(this.id);">
             <img class="shape" id="circle" src="circle.png" onmousedown="smallSafe(event)" onclick="gameMode(this.id);">
             <img class="shape" id="plus" src="plus.png" onmousedown="hardMode(event)" onclick="gameMode(this.id);">
             <!--Redirects to the home page website-->

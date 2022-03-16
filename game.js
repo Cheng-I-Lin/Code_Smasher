@@ -590,6 +590,13 @@ function hammerMiddle(event){
         gameMode("title");
     }
 }
+//Makes triangles light up faster
+function fasterTrinity(event){
+    if(event.button==2){
+        player1.hard=true;
+        gameMode("triangle");
+    }
+}
 document.addEventListener("click",function(mouse){
     if(squareUp&&!player1.dead&&!player2.dead){
         if((mouse.x>=player1.x&&mouse.x<=player1.x+player1.size)&&(mouse.y-grid.offsetTop>=player1.y&&mouse.y-grid.offsetTop<=player1.y+player1.size)){
@@ -800,7 +807,7 @@ function game(){
 var index=0;
 //Colors the triangles in trinity
 setInterval(function(){
-    if(trinity&&!pause){
+    if(trinity&&!pause&&!player1.hard){
         triangle.color1=false;
         triangle.color2=false;
         triangle.color3=false;
@@ -828,6 +835,35 @@ setInterval(function(){
         }
     }
 },800);
+setInterval(function(){
+    if(trinity&&!pause&&player1.hard){
+        triangle.color1=false;
+        triangle.color2=false;
+        triangle.color3=false;
+        switch(trinityArr[index]){
+            case 0:
+                triangle.color1=true;
+                triangle.color2=false;
+                triangle.color3=false;
+                break;
+            case 1:
+                triangle.color1=false;
+                triangle.color2=true;
+                triangle.color3=false;
+                break;
+            case 2:
+                triangle.color1=false;
+                triangle.color2=false;
+                triangle.color3=true;
+                break;
+            default:
+                break;
+        }
+        if(index!=trinityArr.length){
+            index++;
+        }
+    }
+},400);
 function instruct(){
     document.getElementById("intro").style.bottom="100vh";
 }
