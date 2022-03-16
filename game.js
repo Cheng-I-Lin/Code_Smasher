@@ -308,17 +308,28 @@ function drawGame(){
         ds.shadowBlur=30;
         ds.shadowColor="rgba(255, 0, 0, 1)";
         ds.fillStyle="brown";
-        ds.fillRect(50,window.innerHeight/2-grid.offsetTop-25,175,50);
+        if(player1.hard){
+            ds.fillRect(window.innerWidth/2-220,window.innerHeight/2-grid.offsetTop-25,175,50);
+        } else{
+            ds.fillRect(50,window.innerHeight/2-grid.offsetTop-25,175,50);
+        }
         if(player1.dead){
             ds.fillStyle="red";
         } else{
             ds.fillStyle="black";
         }
         //Minus 50 due to the half of width
-        ds.fillRect(window.innerWidth/5-100,window.innerHeight/2-grid.offsetTop-75,100,150);
-        ds.fillStyle="gold";
-        ds.fillRect(window.innerWidth/5-100,window.innerHeight/2-grid.offsetTop-100,100,25);
-        ds.fillRect(window.innerWidth/5-100,window.innerHeight/2-grid.offsetTop+75,100,25);
+        if(player1.hard){
+            ds.fillRect(window.innerWidth/2-50,window.innerHeight/2-grid.offsetTop-75,100,150);
+            ds.fillStyle="gold";
+            ds.fillRect(window.innerWidth/2-50,window.innerHeight/2-grid.offsetTop-100,100,25);
+            ds.fillRect(window.innerWidth/2-50,window.innerHeight/2-grid.offsetTop+75,100,25);
+        } else{
+            ds.fillRect(window.innerWidth/5-100,window.innerHeight/2-grid.offsetTop-75,100,150);
+            ds.fillStyle="gold";
+            ds.fillRect(window.innerWidth/5-100,window.innerHeight/2-grid.offsetTop-100,100,25);
+            ds.fillRect(window.innerWidth/5-100,window.innerHeight/2-grid.offsetTop+75,100,25);
+        }
     }
 }
 //Determine if triangle clicked or not
@@ -460,13 +471,28 @@ document.addEventListener("keyup",function(key){
                 }
             }
             //Checks if hit the platform
-            if(codeSmasher&&!player1.dead){
+            if(codeSmasher&&!player1.dead&&!pause&&!player1.hard){
                 if(window.innerWidth/5<platform.x-20||window.innerWidth/5>platform.x+platform.size+30){
                     player1.dead=true;
                 } else{
                     if((window.innerWidth/5>=platform.x-20&&window.innerWidth/5<=platform.x+50)||(window.innerWidth/5>=platform.x+platform.size-40&&window.innerWidth/5<=platform.x+platform.size+30)){
                         smashPoint++;
                     } else if((window.innerWidth/5>=platform.x+50&&window.innerWidth/5<=platform.x+110)||(window.innerWidth/5>=platform.x+platform.size-100&&window.innerWidth/5<=platform.x+platform.size-40)){
+                        smashPoint+=3;
+                    } else{
+                        smashPoint+=5;
+                    }
+                    //Returns once clicked so player can't keep clicking to stack up points
+                    platform.x=window.innerWidth+20;
+                }
+            }
+            if(codeSmasher&&!player1.dead&&!pause&&player1.hard){
+                if(window.innerWidth/2+50<platform.x-20||window.innerWidth/2+50>platform.x+platform.size+30){
+                    player1.dead=true;
+                } else{
+                    if((window.innerWidth/2+50>=platform.x-20&&window.innerWidth/2+50<=platform.x+50)||(window.innerWidth/2+50>=platform.x+platform.size-40&&window.innerWidth/2+50<=platform.x+platform.size+30)){
+                        smashPoint++;
+                    } else if((window.innerWidth/2+50>=platform.x+50&&window.innerWidth/2+50<=platform.x+110)||(window.innerWidth/2+50>=platform.x+platform.size-100&&window.innerWidth/2+50<=platform.x+platform.size-40)){
                         smashPoint+=3;
                     } else{
                         smashPoint+=5;
@@ -555,6 +581,13 @@ function smallSafe(event){
     if(event.button==2){
         player1.hard=true;
         gameMode("circle");
+    }
+}
+//Makes hammer forward in the middle
+function hammerMiddle(event){
+    if(event.button==2){
+        player1.hard=true;
+        gameMode("title");
     }
 }
 document.addEventListener("click",function(mouse){

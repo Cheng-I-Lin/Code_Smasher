@@ -90,14 +90,16 @@
                 orange, and green layers. The player would have to react quickily and hit the space bar onces the hammer enters the 
                 target zones. Doing so, the hammer would stop moving, and the location on the zone where it end up will add points to
                 your total score: white zone has a single point, orange zone has 3 points, and green zone has 5 points. However, if the
-                hammer is stopped to early or too late(outside the white zone), then the game will end.<br>
+                hammer is stopped to early or too late(outside the white zone), then the game will end. By clicking the right mouse
+                key, hard mode will be activated and the hammer will be moved closer to the center, giving the players a harder time
+                to react to the fast moving target zones.<br>
                 <img style="width: 85vw;" src="imgCodeSmash.png">   
             </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
             <button class="introButton" onclick="back();"><strong>BACK [B]</strong></button>
         </div>
         <!--Make hammer fly in for intro page, maybe don't need start, just start with click-->
         <div id="intro">
-            <img id="title" src="titleCard.png" onclick="gameMode(this.id);">
+            <img id="title" src="titleCard.png" onmousedown="hammerMiddle(event)" onclick="gameMode(this.id);">
             <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
             <h1 id="chooseTitle">Select a Game Mode</h1>
             <img class="shape" id="square" src="square.png" onmousedown="noDash(event)" onclick="gameMode(this.id);">
