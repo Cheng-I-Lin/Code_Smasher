@@ -52,7 +52,8 @@
                 In Protect the Bubble, players would control the movements of a bubble(circle) using the mouse. However, there will be
                 obstacles moving down which the player has to avoid by moving the bubble to a safe spot where it would not come in
                 contact with the obstacles. Keep the bubble alive and try not not to burst it. The longer you do so, the more
-                points you would score.<br>
+                points you would score. By clicking with the right mouse key, hard mode will be activated and the safe spot where the 
+                bubble can safely go through will become smaller, making it more difficult for the players to reach new high scores.<br>
                 <img style="width: 85vw;" src="imgBubble.png">
                 <br><br>
                 <strong>Square Up:</strong><br>
@@ -60,7 +61,8 @@
                 the movements of a square. Each player can move the square left to right and can also make it jump. Moreover, by pressing
                 either the S key or the down arrow key, the square will shrink, becoming a smaller square with a faster movement speed.
                 Lastly, the players can also press either the space or the enter key to make the square dash forward. The objective of 
-                this game is to try to jump on top of the other player's square, and the first to do so wins.<br>
+                this game is to try to jump on top of the other player's square, and the first to do so wins. By clicking with the right
+                mouse key, hard mode will be activated and the dashing ability of the squares will no longer be available.<br>
                 <img style="width: 85vw;" src="imgSquareUp.png">
                 <br><br>
                 <strong>Trinity:</strong><br>
@@ -98,9 +100,9 @@
             <img id="title" src="titleCard.png" onclick="gameMode(this.id);">
             <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
             <h1 id="chooseTitle">Select a Game Mode</h1>
-            <img class="shape" id="square" src="square.png" onclick="gameMode(this.id);">
+            <img class="shape" id="square" src="square.png" onmousedown="noDash(event)" onclick="gameMode(this.id);">
             <img class="shape" id="triangle" src="triangle.png" onclick="gameMode(this.id);">
-            <img class="shape" id="circle" src="circle.png" onclick="gameMode(this.id);">
+            <img class="shape" id="circle" src="circle.png" onmousedown="smallSafe(event)" onclick="gameMode(this.id);">
             <img class="shape" id="plus" src="plus.png" onmousedown="hardMode(event)" onclick="gameMode(this.id);">
             <!--Redirects to the home page website-->
             <button class="introButton" id="start" onclick="location.href='https://cheng-i-lin.github.io'"><strong>MAIN WEBSITE</strong></button>

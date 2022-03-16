@@ -165,6 +165,11 @@ function drawGame(){
         ds.fillRect(player2.x,player2.y,player2.size,player2.size);
     }
     if(bubble){
+        if(player1.hard){
+            safeSpot.size=150;
+        } else{
+            safeSpot.size=300;
+        }
         ds.fillStyle="transparent";
         ds.fillRect(0,obstacle.y,window.innerWidth,obstacle.size);
         ds.strokeStyle="orange";
@@ -367,7 +372,7 @@ document.addEventListener("keydown",function(key){
             break;
         case "Enter":
             let shouldCheck=true;
-            if(squareUp&&!player1.dead&&!player2.dead){
+            if(squareUp&&!player1.dead&&!player2.dead&&!player1.hard){
                 controls2.dash=false;
             }
             if(addEquation){
@@ -391,7 +396,7 @@ document.addEventListener("keydown",function(key){
             }
             break;
         case "Space":
-            if(squareUp&&!player1.dead&&!player2.dead){
+            if(squareUp&&!player1.dead&&!player2.dead&&!player1.hard){
                 controls1.dash=false;
             }
             break;
@@ -432,7 +437,7 @@ document.addEventListener("keyup",function(key){
             controls1.right=false;
             break;
         case "Enter":
-            if(squareUp&&!player1.dead&&!player2.dead){
+            if(squareUp&&!player1.dead&&!player2.dead&&!player1.hard){
                 controls2.dash=true;
                 if(controls2.left){
                     player2.x-=200;
@@ -444,7 +449,7 @@ document.addEventListener("keyup",function(key){
             }
             break;
         case "Space":
-            if(squareUp&&!player1.dead&&!player2.dead){
+            if(squareUp&&!player1.dead&&!player2.dead&&!player1.hard){
                 controls1.dash=true;
                 if(controls1.left){
                     player1.x-=200;
@@ -538,6 +543,20 @@ function hardMode(event){
         gameMode("plus");
     }
 }
+//Turns ability to dash off
+function noDash(event){
+    if(event.button==2){
+        player1.hard=true;
+        gameMode("square");
+    }
+}
+//Makes safespot smaller
+function smallSafe(event){
+    if(event.button==2){
+        player1.hard=true;
+        gameMode("circle");
+    }
+}
 document.addEventListener("click",function(mouse){
     if(squareUp&&!player1.dead&&!player2.dead){
         if((mouse.x>=player1.x&&mouse.x<=player1.x+player1.size)&&(mouse.y-grid.offsetTop>=player1.y&&mouse.y-grid.offsetTop<=player1.y+player1.size)){
@@ -608,7 +627,10 @@ function game(){
         if(!player1.dead){
             player1.x=mouseX;
             player1.y=mouseY;
-            obstacle.y+=obstacle.speed;
+            //So player can have the chance to move bubble away from obstacle during transitioning of screens
+            if(points>=3){
+                obstacle.y+=obstacle.speed;
+            }
             safeSpot.y=obstacle.y;
             if(obstacle.y>=grid.offsetHeight){
                 obstacle.y=0-obstacle.size;
@@ -786,6 +808,8 @@ function back(){
     addEquation=false;
     codeSmasher=false;
     player1.hard=false;
+    //Reset to -1 only when clicked back
+    points=-1;
 }
 function pauseGame(){
     let pauseButton=document.getElementById("pauseButton");
@@ -806,7 +830,7 @@ function restartGame(){
     player2.ySpeed=0;
     player2.x=window.innerWidth-player2.size;
     player2.y=0;
-    points=-1;
+    points=0;
     obstacle.y=-obstacle.size;
     player1.dead=false;
     player2.dead=false;
